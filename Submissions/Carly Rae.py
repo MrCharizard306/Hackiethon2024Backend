@@ -11,7 +11,7 @@ from Game.gameSettings import HP, LEFTBORDER, RIGHTBORDER, LEFTSTART, RIGHTSTART
 
 # TODO FOR PARTICIPANT: Set primary and secondary skill here
 PRIMARY_SKILL = DashAttackSkill
-SECONDARY_SKILL = Hadoken
+SECONDARY_SKILL = Grenade
 
 #constants, for easier move return
 #movements
@@ -109,8 +109,10 @@ class Script:
             
             elif distance == 1 and primary_on_cooldown:
                     JUMP_BACKWARD
+            elif get_projectile_type(enemy_projectiles[0]) == 'grenade' and distproj <= 1:
+                return BACK
             elif distproj <= 1:
-                return BLOCK 
+                return BLOCK
                 
             # elif distproj == 1:
             #     return JUMP_FORWARD
