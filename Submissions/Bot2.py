@@ -10,8 +10,8 @@ from Game.gameSettings import HP, LEFTBORDER, RIGHTBORDER, LEFTSTART, RIGHTSTART
 # SECONDARY CAN BE : Hadoken, Grenade, Boomerang, Bear Trap
 
 # TODO FOR PARTICIPANT: Set primary and secondary skill here
-PRIMARY_SKILL = SuperSaiyanSkill 
-SECONDARY_SKILL = Boomerang   
+PRIMARY_SKILL = SuperArmorSkill     
+SECONDARY_SKILL = Boomerang      
 
 #constants, for easier move return
 #movements
@@ -48,78 +48,17 @@ class Script:
     
     # MAIN FUNCTION that returns a single move to the game manager
     def get_move(self, player, enemy, player_projectiles, enemy_projectiles):
+        
+        if not secondary_on_cooldown(player):
+            return SECONDARY
+        elif not secondary_on_cooldown(player):
+            return PRIMARY
+        
         distance = abs(get_pos(player)[0] - get_pos(enemy)[0])
-        # if not secondary_on_cooldown(player) and distance == 1:
-        #    return SECONDARY
-        # if not primary_on_cooldown(player):
-        #     return PRIMARY
-       
-        # if distance < 3 :
-        #     return LIGHT
+        if distance < 3:
+            return LIGHT
         
-        # return FORWARD
-        
-
-        if not bool(enemy_projectiles):
-            # if get_stun_duration(enemy) == 0 and distance == 1:
-            #     return HEAVY
-            # elif get_stun_duration(enemy) > 0 and distance == 1:
-            #     for i in range(3):
-            #         LIGHT 
-            # if distance < 3:
-            #     return BACK
-            # elif not primary_on_cooldown(player) and distance < 5:
-            #     return PRIMARY
-            # # elif not secondary_on_cooldown(player) and 2 <= distance <= 7:
-            # #     return SECONDARY and BACK
-            # elif not secondary_on_cooldown and distance >= 2:
-            #     return SECONDARY
-            # else: 
-            #     for i in range(3):
-            #         BACK
-            #
-            # if not secondary_on_cooldown(player):
-            #     return SECONDARY
-            # elif not primary_on_cooldown(player):
-            #     return PRIMARY
-            # else:
-            #     return LIGHT
-            # if distance == 1:
-            #     return HEAVY
-           
-
-            if get_stun_duration(enemy) == 0 and distance <= 1:
-                return BLOCK
-            elif distance  <= 1 and not heavy_on_cooldown and get_stun_duration(enemy) != 0 :
-                return HEAVY
-            elif distance  <= 1 and  heavy_on_cooldown and get_stun_duration(enemy) != 0 :
-                return LIGHT
-            elif not primary_on_cooldown(player):
-                return PRIMARY
-            elif not secondary_on_cooldown(player) and get_pos(player)[1] == 0:
-                return SECONDARY
-            
-            else:
-                return FORWARD
-
-                
-        else:
-            
-            distproj = abs(get_pos(player)[0] - get_proj_pos(enemy_projectiles[0])[0])
-            print(distproj)
-            if distance < 5 and distproj < 5 and not primary_on_cooldown(player):
-                return PRIMARY
-            
-            elif distance == 1 and primary_on_cooldown:
-                    JUMP_BACKWARD
-            elif distproj <= 1:
-                return BLOCK 
-                
-            # elif distproj == 1:
-            #     return JUMP_FORWARD
-            # else: 
-            #     return FORWARD 
-         
+        return FORWARD
 
                 
             # if distance == 1:

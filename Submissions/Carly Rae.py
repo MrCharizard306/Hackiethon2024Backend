@@ -3,7 +3,7 @@ from Game.Skills import *
 from Game.projectiles import *
 from ScriptingHelp.usefulFunctions import *
 from Game.playerActions import defense_actions, attack_actions, projectile_actions
-from gameSettings import HP, LEFTBORDER, RIGHTBORDER, LEFTSTART, RIGHTSTART, PARRYSTUN
+from Game.gameSettings import HP, LEFTBORDER, RIGHTBORDER, LEFTSTART, RIGHTSTART, PARRYSTUN
 
 
 # PRIMARY CAN BE: Teleport, Super Saiyan, Meditate, Dash Attack, Uppercut, One Punch
@@ -85,7 +85,7 @@ class Script:
             #     return HEAVY
            
 
-            if get_stun_duration(enemy) == 0 and distance <= 1 and primary_on_cooldown:
+            if get_stun_duration(enemy) == 0 and distance <= 1 and primary_on_cooldown(enemy):
                 return BLOCK and BACK
             elif distance  <= 1 and not heavy_on_cooldown and get_stun_duration(enemy) != 0 :
                 return HEAVY
