@@ -3,15 +3,15 @@ from Game.Skills import *
 from Game.projectiles import *
 from ScriptingHelp.usefulFunctions import *
 from Game.playerActions import defense_actions, attack_actions, projectile_actions
-from Game.gameSettings import HP, LEFTBORDER, RIGHTBORDER, LEFTSTART, RIGHTSTART, PARRYSTUN
+from gameSettings import HP, LEFTBORDER, RIGHTBORDER, LEFTSTART, RIGHTSTART, PARRYSTUN
 
 
 # PRIMARY CAN BE: Teleport, Super Saiyan, Meditate, Dash Attack, Uppercut, One Punch
 # SECONDARY CAN BE : Hadoken, Grenade, Boomerang, Bear Trap
 
 # TODO FOR PARTICIPANT: Set primary and secondary skill here
-PRIMARY_SKILL = SuperSaiyanSkill 
-SECONDARY_SKILL = Boomerang   
+PRIMARY_SKILL = DashAttackSkill
+SECONDARY_SKILL = Hadoken
 
 #constants, for easier move return
 #movements
@@ -28,7 +28,6 @@ BLOCK = ("block",)
 
 PRIMARY = get_skill(PRIMARY_SKILL)
 SECONDARY = get_skill(SECONDARY_SKILL)
-CANCEL = ("skill_cancel", )
 
 # no move, aka no input
 NOMOVE = "NoMove"
@@ -49,17 +48,15 @@ class Script:
     # MAIN FUNCTION that returns a single move to the game manager
     def get_move(self, player, enemy, player_projectiles, enemy_projectiles):
         distance = abs(get_pos(player)[0] - get_pos(enemy)[0])
-        # if not secondary_on_cooldown(player) and distance == 1:
-        #    return SECONDARY
-        # if not primary_on_cooldown(player):
+        # if not primary_on_cooldown(player) and distance < 5:
         #     return PRIMARY
-       
-        # if distance < 3 :
-        #     return LIGHT
-        
-        # return FORWARD
-        
-
+        # elif distance == 1:
+        #     return BLOCK
+        # if get_stun_duration(enemy) == 0 and distance == 1:
+        #     return BLOCK
+        # elif get_stun_duration(enemy) > 0 and distance == 1:
+        #     for i in range(3):
+        #         LIGHT 
         if not bool(enemy_projectiles):
             # if get_stun_duration(enemy) == 0 and distance == 1:
             #     return HEAVY
@@ -88,13 +85,13 @@ class Script:
             #     return HEAVY
            
 
-            if get_stun_duration(enemy) == 0 and distance <= 1:
-                return BLOCK
+            if get_stun_duration(enemy) == 0 and distance <= 1 and primary_on_cooldown:
+                return BLOCK and BACK
             elif distance  <= 1 and not heavy_on_cooldown and get_stun_duration(enemy) != 0 :
                 return HEAVY
             elif distance  <= 1 and  heavy_on_cooldown and get_stun_duration(enemy) != 0 :
                 return LIGHT
-            elif not primary_on_cooldown(player):
+            elif not primary_on_cooldown(player) and distance < 5:
                 return PRIMARY
             elif not secondary_on_cooldown(player) and get_pos(player)[1] == 0:
                 return SECONDARY
@@ -139,3 +136,7 @@ class Script:
         
         
     
+
+        
+        
+
