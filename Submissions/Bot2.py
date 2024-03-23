@@ -11,7 +11,7 @@ from Game.gameSettings import HP, LEFTBORDER, RIGHTBORDER, LEFTSTART, RIGHTSTART
 
 # TODO FOR PARTICIPANT: Set primary and secondary skill here
 PRIMARY_SKILL = DashAttackSkill     
-SECONDARY_SKILL = BearTrap      
+SECONDARY_SKILL = Hadoken      
 
 #constants, for easier move return
 #movements
@@ -99,16 +99,24 @@ class Script:
             #     return HEAVY
            
 
-            if get_stun_duration(enemy) == 0 and distance <= 1 and primary_on_cooldown(enemy):
-                return BLOCK and BACK
+            # if get_stun_duration(enemy) == 0 and distance <= 1 and primary_on_cooldown(enemy):
+            #     return BLOCK and BACK
+            # elif distance  <= 1 and not heavy_on_cooldown and get_stun_duration(enemy) != 0 :
+            #     return HEAVY
+            # elif distance  <= 1 and  heavy_on_cooldown and get_stun_duration(enemy) != 0 :
+            #     return LIGHT
+            # elif not primary_on_cooldown(player) and distance < 5:
+            #     return PRIMARY
+            # elif not secondary_on_cooldown(player) and get_pos(player)[1] == 0:
+            #     return SECONDARY
+            if not secondary_on_cooldown(player):
+                return SECONDARY
+            elif not primary_on_cooldown(player):
+                return PRIMARY
             elif distance  <= 1 and not heavy_on_cooldown and get_stun_duration(enemy) != 0 :
                 return HEAVY
             elif distance  <= 1 and  heavy_on_cooldown and get_stun_duration(enemy) != 0 :
                 return LIGHT
-            elif not primary_on_cooldown(player) and distance < 5:
-                return PRIMARY
-            elif not secondary_on_cooldown(player) and get_pos(player)[1] == 0:
-                return SECONDARY
             
             else:
                 return FORWARD and BLOCK

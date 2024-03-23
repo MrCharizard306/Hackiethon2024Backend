@@ -84,19 +84,24 @@ class Script:
             # if distance == 1:
             #     return HEAVY
            
-
-            if get_stun_duration(enemy) == 0 and distance <= 1 and primary_on_cooldown(enemy):
-                return BLOCK and BACK
+            print(get_block_status(enemy))
+           
+            if not primary_on_cooldown(player) and distance < 5:
+                return PRIMARY
+            elif not secondary_on_cooldown(player) and get_pos(player)[1] == 0:
+                return SECONDARY
+            elif get_stun_duration(enemy) == 0 and distance <= 1 and primary_on_cooldown(enemy):
+                return BLOCK 
             elif distance  <= 1 and not heavy_on_cooldown and get_stun_duration(enemy) != 0 :
                 return HEAVY
             elif distance  <= 1 and  heavy_on_cooldown and get_stun_duration(enemy) != 0 :
                 return LIGHT
-            elif not primary_on_cooldown(player) and distance < 5:
-                return PRIMARY
-            elif not secondary_on_cooldown(player) and get_pos(player)[1] == 0:
-                return SECONDARY
+            elif get_block_status(enemy) !=0 and distance > 1:
+                    return FORWARD
+            elif get_block_status(enemy) != 10 and distance <= 1:
+                    return LIGHT
             
-            else:
+            elif distance > 5 :
                 return FORWARD
 
                 
@@ -108,7 +113,7 @@ class Script:
                 return PRIMARY
             
             elif distance == 1 and primary_on_cooldown:
-                    JUMP_BACKWARD
+                    return BACK
             elif get_projectile_type(enemy_projectiles[0]) == 'grenade' and distproj <= 1:
                 return BACK
             elif distproj <= 1:
